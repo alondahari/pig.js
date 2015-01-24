@@ -1,0 +1,485 @@
+
+$navbar-height: 10px;
+$color-white: #f4f4f4;
+$color-pink: #fd00a7;
+$color-red: #d70c0e;
+$color-grey: #c1c1c1;
+$dots: 10;
+$duration: 1;
+
+
+//-----------------------------------------------------------------------
+//  =General
+//-----------------------------------------------------------------------
+
+.photo-modal {
+  z-index: -1;
+  opacity: 0;
+  filter: alpha(opacity = 0);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-height: 95%;
+  // min-height: 50%;
+  max-width: 95%;
+  cursor: pointer;
+  border: 10px solid black;
+  box-shadow: 0px 5px 15px rgba(30, 30, 30, 0.6);
+  border-radius: 6px;
+  transition: opacity 0.5s;
+}
+
+.modal-dismiss {
+  z-index: -1;
+  opacity: 0;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  cursor: pointer;
+}
+
+.modal-dismiss[data-dir="prev"] {
+  margin-left: -80px;
+}
+
+.modal-dismiss[data-dir="next"] {
+  margin-left: 67px;
+}
+
+.photo-modal.modal-cast, .modal-dismiss.modal-cast {
+  z-index: 9999;
+  opacity: 1;
+}
+
+.screen {
+  width: 100%;
+  z-index: -1;
+  opacity: 0;
+  height: 0;
+  position: fixed;
+  background-color: black;
+  transition: opacity 0.5s;
+}
+
+.screen.cast {
+  opacity: 0.8;
+  height: 9999px;
+  z-index: 9000;
+}
+
+progress {
+  opacity: 0;
+  position: fixed;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  margin-left: -80px;
+  margin-top: 40px;
+}
+
+
+// IE10
+progress {
+  color: $color-pink;
+}
+
+// Firefox
+progress::-moz-progress-bar {
+  background: $color-pink;
+}
+
+// Chrome
+progress::-webkit-progress-value {
+  background: $color-pink;
+}
+
+// Polyfill
+progress[aria-valuenow]:before {
+  background: $color-pink;
+}
+
+.ring1 {
+  z-index: -1;
+  opacity: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: transparent;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -27px;
+  margin-top: -25px;
+  animation: rotate 3s infinite linear;
+  border-left: 5px solid rgba(253, 0, 167, 0.15);
+  border-bottom: 5px solid rgba(253, 0, 167, 1);
+  border-right: 5px solid rgba(253, 0, 167, 0.15);
+  border-top: 5px solid rgba(253, 0, 167, 1);
+  transition: opacity 0s;
+}
+
+.ring2 {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: transparent;
+  animation: rotate 2s infinite linear;
+  border-left: 5px solid rgba(253, 0, 167, 0.15);
+  border-bottom: 5px solid rgba(253, 0, 167, 0.15);
+  border-right: 5px solid rgba(253, 0, 167, 0.15);
+  border-top: 5px solid rgba(253, 0, 167, 1);
+}
+
+.ring3 {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: transparent;
+  animation: rotate 1s infinite linear;
+  border-left: 5px solid rgba(253, 0, 167, 0.15);
+  border-bottom: 5px solid rgba(253, 0, 167, 0.15);
+  border-right: 5px solid rgba(253, 0, 167, 0.15);
+  border-top: 5px solid rgba(253, 0, 167, 1);
+}
+
+.ring4 {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: transparent;
+  animation: rotate 0.9s infinite linear;
+  border-left: 5px solid rgba(253, 0, 167, 0.15);
+  border-bottom: 5px solid rgba(253, 0, 167, 0.15);
+  border-right: 5px solid rgba(253, 0, 167, 0.15);
+  border-top: 5px solid rgba(253, 0, 167, 1);
+}
+
+.ring-text {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -30px;
+  margin-top: -10px;
+  .ring1 {
+    position: absolute;
+    opacity: 1;
+    z-index: 10000;
+    margin-left: -25px;
+    margin-top: -25px;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.ring1.spinner-cast, progress.spinner-cast {
+  opacity: 1;
+  z-index: 9001;
+  transition: opacity 5s;
+}
+
+//-----------------------------------------------------------------------
+//  =Gallery
+//-----------------------------------------------------------------------
+
+.mozaicItems, .mozaicItem, .mozaicFrameItem, .mozaicImageBox {
+  position: absolute;
+}
+
+.mozaicFrame {
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+
+.mozaic {
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+.mozaicItem, .mozaicImageBox {
+  border: 2px solid black;
+  // fix z-index for floated objects on webkit
+  // force activating hardware accelration:
+  transform: translate3d(0, 0, 0);
+  transition: transform 1s, z-index 1s, opacity 1.5s;
+}
+
+.small-mozaic {
+  opacity: 1 !important;
+}
+
+.mozaicItem {
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.mozaicItems {
+  width: 100%;
+  height: 100%;
+}
+
+.mozaicImageBox {
+  z-index: 0;
+  overflow: hidden;
+  cursor: pointer;
+  // background: url();
+}
+
+.mozaicItem:hover {
+  opacity: 1;
+}
+
+@media all and (min-width: 768px) {
+  .mozaicItem {
+    z-index: 1000;
+    pointer-events: auto;
+  }
+  .mozaicItem:hover {
+    z-index: 2000;
+  }
+}
+
+
+//-----------------------------------------------------------------------
+//  containScaling
+//-----------------------------------------------------------------------
+
+.leftEdge {
+
+  transform-origin: left;
+
+}
+
+
+
+.rightEdge {
+
+  transform-origin: right;
+
+}
+
+
+
+.topEdge {
+
+  transform-origin: top;
+
+}
+
+
+
+.bottomEdge {
+
+  transform-origin: bottom;
+
+}
+
+
+
+.leftEdge.topEdge {
+
+  transform-origin: top left;
+
+}
+
+
+
+.rightEdge.topEdge {
+
+  transform-origin: top right;
+
+}
+
+
+
+.leftEdge.bottomEdge {
+
+  transform-origin: bottom left;
+
+}
+
+
+
+.rightEdge.bottomEdge {
+
+  transform-origin: bottom right;
+
+}
+
+
+
+
+//-----------------------------------------------------------------------
+//  Slider
+//-----------------------------------------------------------------------
+
+.mozaicSlider {
+  overflow: hidden;
+  height: 400px;
+  position: relative;
+}
+
+.mozaicSliderInner {
+  // height: 100%
+  // width: 9999px
+  position: absolute;
+  // display: block
+  // // max-width: 100%
+  // // max-height: 100%
+  left: 0;
+  right: -9999px;
+  top: 0;
+  bottom: 0;
+  // // margin: auto
+}
+
+#slider-nav {
+  text-align: center;
+  a {
+    width: 30px;
+    display: inline-block;
+    opacity: 0.5;
+    span {
+      color: white;
+      text-align: center;
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
+      font-size: 30px;
+      font-family: serif;
+    }
+    &:hover {
+      opacity: 0.9;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+  .gallery-name {
+    font-size: 19px;
+  }
+}
+
+
+//-----------------------------------------------------------------------
+//  =edit gallery
+//-----------------------------------------------------------------------
+
+#edit-gallery {
+  #imgForm {
+    border: solid 1px rgb(20, 20, 20);
+    padding: 10px;
+    width: 800px;
+    overflow: hidden;
+    a {
+      line-height: 26px;
+      vertical-align: center;
+      margin-left: 10px;
+    }
+    p {
+      text-align: justify;
+      float: left;
+      width: 800px;
+      label {
+        width: 200px;
+        color: #666666;
+        clear: both;
+        margin-top: 2px;
+      }
+      input[type="file"] {
+        display: none;
+      }
+    }
+    input[type="submit"] {
+      clear: both;
+      float: left;
+    }
+    button, input[type="submit"] {
+      border-radius: 5px;
+    }
+    .validationError {
+      margin-left: 5px;
+    }
+    .hasError {
+      box-shadow: 0 0 2px 1px red;
+    }
+  }
+  h3 {
+    display: none;
+  }
+  .main-img {
+    width: 200px;
+  }
+  #img-lst {
+    list-style: none;
+    display: inline;
+    padding-bottom: 200px;
+    li {
+      margin-bottom: 10px;
+      margin-right: 10px;
+      float: left;
+      position: relative;
+      img {
+        height: 100px;
+        transition: opacity 0.2s;
+      }
+      div {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 501;
+        opacity: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        &:hover {
+          opacity: 1;
+          cursor: pointer;
+        }
+        p {
+          top: 45%;
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+/* imgAreaSelect default style */
+
+$ant-gradient-h: linear-gradient(90deg, rgba(255, 255, 255, .6) 50%, rgba(0, 0, 0, .6) 50%);
+$ant-gradient-v: linear-gradient(180deg, rgba(255, 255, 255, .6) 50%, rgba(0, 0, 0, .6) 50%);
+
+.imgareaselect-selection {
+  animation: marqueeAnimate 12s linear infinite;
+  background-image: $ant-gradient-h, $ant-gradient-v, $ant-gradient-v, $ant-gradient-h;
+  background-position: top, left, right, bottom;
+  background-repeat: repeat-x, repeat-y, repeat-y, repeat-x;
+  background-size: 6px 1px, 1px 6px, 1px 6px, 6px 1px;
+}
+
+@keyframes marqueeAnimate {
+    0% {background-position: 0 0, 0 0, 100% 0, 0 100%;}
+  100% {background-position: 100% 0, 0 -100%, 100% 100%, -100% 100%;}
+}
+
+.imgareaselect-handle {
+  background-color: white;
+  border: solid 1px black;
+  filter: alpha(opacity = 50);
+  opacity: 0.5;
+}
+
+.imgareaselect-outer {
+  background-color: black;
+  filter: alpha(opacity = 50);
+  opacity: 0.5;
+}
